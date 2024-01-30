@@ -1,7 +1,11 @@
 import { Navbar } from './_components/navbar';
 import { Footer } from './_components/footer';
 
-const MarketingLayout = ({ children }: { children: React.ReactNode }) => {
+const MarketingLayout = ({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) => {
   return (
     <div className="h-full bg-slate-100">
       <Navbar />
