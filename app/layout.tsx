@@ -1,9 +1,19 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Taskify',
-  description: 'Trello Clone',
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig}`,
+  },
+  description: siteConfig.description,
+  icons: [
+    {
+      url: '/logo.svg',
+      href: 'logo.svg',
+    },
+  ],
 };
 
 export default function RootLayout({
