@@ -1,4 +1,17 @@
+import { startCase } from 'lodash';
+
 import OrgControl from './_components/org-control';
+import { auth } from '@clerk/nextjs';
+
+export async function generateMetadata() {
+  const { orgSlug } = auth();
+
+  console.log(orgSlug);
+
+  return {
+    title: startCase(orgSlug || 'organization'),
+  };
+}
 
 const OrganizationIdLayout = ({
   children,
