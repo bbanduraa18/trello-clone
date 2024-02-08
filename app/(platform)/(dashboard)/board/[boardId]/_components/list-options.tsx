@@ -1,6 +1,10 @@
 'use client';
 
 import { List } from '@prisma/client';
+import { toast } from 'sonner';
+
+import { useAction } from '@/hooks/use-action';
+import { deleteList } from '@/actions/delete-list';
 
 import { MoreHorizontal, X } from 'lucide-react';
 
@@ -20,6 +24,22 @@ interface ListOptionsProps {
 }
 
 const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
+  const { execute: executeDelete } = useAction(deleteList, {
+    onSuccess: (data) => {
+      toast.success(`List "${data.title}" deleted`);
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
+  const onDelete = (formData: FormData) => {
+    const id = formData.get('id') as string;
+    const boardId = formData.get('boardId') as string;
+
+    executeDelete({ id, boardId });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -51,8 +71,14 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
         </Button>
 
         <form>
-          <input hidden name="id" id="id" value={data.id} />
-          <input hidden name="boardId" id="boardId" value={data.boardId} />
+          <input hidden name="id" id="id" value={data.id} readOnly />
+          <input
+            hidden
+            name="boardId"
+            id="boardId"
+            value={data.boardId}
+            readOnly
+          />
           <FormSubmit
             variant="ghost"
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
@@ -63,9 +89,15 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
 
         <Separator />
 
-        <form>
-          <input hidden name="id" id="id" value={data.id} />
-          <input hidden name="boardId" id="boardId" value={data.boardId} />
+        <form action={onDelete}>
+          <input hidden name="id" id="id" value={data.id} readOnly />
+          <input
+            hidden
+            name="boardId"
+            id="boardId"
+            value={data.boardId}
+            readOnly
+          />
           <FormSubmit
             variant="ghost"
             className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
