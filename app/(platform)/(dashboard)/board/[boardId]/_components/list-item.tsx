@@ -39,6 +39,7 @@ const ListItem = ({ data, index }: ListItemProps) => {
           enableEditing={enableEditing}
           disableEditing={disableEditing}
           listId={data.id}
+          boardId={data.boardId}
         />
       </div>
     </li>
