@@ -13,6 +13,7 @@ import ListItem from './list-item';
 
 interface ListContainerProps {
   data: ListWithCards[];
+  boardId: string;
 }
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
