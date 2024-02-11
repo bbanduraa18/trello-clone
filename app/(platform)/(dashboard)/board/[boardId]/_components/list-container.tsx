@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { useAction } from '@/hooks/use-action';
 import { updateListOrder } from '@/actions/update-list-order';
+import { updateCardOrder } from '@/actions/update-card-order';
 import { ListWithCards } from '@/types';
 
 import ListForm from './list-form';
@@ -31,6 +32,15 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
   const { execute: executeListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast.success('List reordered');
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
+  const { execute: executeCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success('Card reordered');
     },
     onError: (error) => {
       toast.error(error);
@@ -108,6 +118,8 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
         sourceList.cards = reorderedCards;
 
         setOrderedData(newOrderedData);
+        executeCardOrder({ items: reorderedCards, boardId: boardId });
+
         // User moves the card to another list
       } else {
         // Remove card from the source list
@@ -129,6 +141,7 @@ const ListContainer = ({ data, boardId }: ListContainerProps) => {
         });
 
         setOrderedData(newOrderedData);
+        executeCardOrder({ items: destList.cards, boardId: boardId });
       }
     }
   };
